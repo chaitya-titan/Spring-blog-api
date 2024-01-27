@@ -1,4 +1,4 @@
-package com.springpractice.blogapi.users.dto;
+package com.springpractice.blogapi.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

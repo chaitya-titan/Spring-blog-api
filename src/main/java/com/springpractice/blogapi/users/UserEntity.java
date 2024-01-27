@@ -3,10 +3,14 @@ package com.springpractice.blogapi.users;
 import com.springpractice.blogapi.articles.ArticleEntity;
 import com.springpractice.blogapi.commons.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity(name = "users")
+@Getter
+@Setter
 public class UserEntity extends BaseEntity {
 
     @Column(unique = true, nullable = false, length = 50)
