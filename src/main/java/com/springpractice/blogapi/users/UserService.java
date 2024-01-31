@@ -5,6 +5,7 @@ import com.springpractice.blogapi.dto.LoginUserDTO;
 import com.springpractice.blogapi.dto.UserResponseDTO;
 import com.springpractice.blogapi.exception.IncorrectPasswordException;
 import com.springpractice.blogapi.exception.UserNotFoundException;
+import com.springpractice.blogapi.security.jwt.JWTService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +21,14 @@ public class UserService {
     @Autowired
     private ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final JWTService jwtService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JWTService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
     public UserResponseDTO createUser(CreateUserDTO createUserDTO) {
-        //TODO: Encrypt password
         //TODO: Validate Email
         //TODO: Check if username already exists
         createUserDTO.setCreatedAt(new Date());
@@ -35,7 +37,9 @@ public class UserService {
         newUserEntity.setPassword(passwordEncoder.encode(newUserEntity.getPassword()));
         System.out.println(newUserEntity);
         UserEntity savedUser = userRepository.save(newUserEntity);
-        return modelMapper.map(savedUser, UserResponseDTO.class);
+        UserResponseDTO userResponseDTO = modelMapper.map(savedUser, UserResponseDTO.class);
+        userResponseDTO.setToken(jwtService.createJWT(savedUser.getId()));
+        return userResponseDTO;
     }
 
     public UserResponseDTO loginUser(LoginUserDTO loginUserDTO){
@@ -47,7 +51,9 @@ public class UserService {
         if(!passMatch){
             throw new IncorrectPasswordException(userEntity.getUsername());
         }
-        return modelMapper.map(userEntity, UserResponseDTO.class);
+        UserResponseDTO userResponseDTO = modelMapper.map(userEntity, UserResponseDTO.class);
+        userResponseDTO.setToken(jwtService.createJWT(userEntity.getId()));
+        return userResponseDTO;
     }
 
 }
