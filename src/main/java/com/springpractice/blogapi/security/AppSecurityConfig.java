@@ -27,6 +27,7 @@ public class AppSecurityConfig {
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers(HttpMethod.POST, "/users/**").permitAll()
                          .requestMatchers(HttpMethod.GET, "/articles").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/profiles/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, AnonymousAuthenticationFilter.class)
