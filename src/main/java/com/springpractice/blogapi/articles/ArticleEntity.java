@@ -3,10 +3,14 @@ package com.springpractice.blogapi.articles;
 import com.springpractice.blogapi.commons.BaseEntity;
 import com.springpractice.blogapi.users.UserEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity(name = "articles")
+@Setter
+@Getter
 public class ArticleEntity extends BaseEntity {
     @Column(unique = true, nullable = false, length = 150)
     String slug;

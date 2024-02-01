@@ -28,4 +28,8 @@ public class JWTService {
         String id = JWT.require(algorithm).build().verify(token).getSubject();
         return Integer.parseInt(id);
     }
+
+    public String getTokenFromHeader(String authHeader){
+        return authHeader.split(" ")[1];
+    }
 }

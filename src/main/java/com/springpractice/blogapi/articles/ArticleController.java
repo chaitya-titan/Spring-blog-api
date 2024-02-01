@@ -1,9 +1,12 @@
 package com.springpractice.blogapi.articles;
 
+import com.springpractice.blogapi.dto.ArticleResponseDTO;
+import com.springpractice.blogapi.dto.CreateArticleDTO;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/articles")
@@ -11,14 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArticleController {
     private ArticleService articleService;
 
-    @GetMapping("")
-    public String getArticles() {
-        return "Articles";
-    }
+//    @GetMapping("")
+//    public String getArticles() {
+//        return "Hello World";
+//    }
+//
+//    @GetMapping("/private")
+//    public String getPrivateArticles() {
+//        return "Hello Private World";
+//    }
 
-    @GetMapping("/private")
-    public String getPrivateArticles() {
-        return "Private Articles";
+    @PostMapping("")
+    public ResponseEntity<ArticleResponseDTO> createArticle(@RequestBody CreateArticleDTO createArticleDTO) {
+        ArticleResponseDTO articleResponseDTO = articleService.createArticle(createArticleDTO);
+        return ResponseEntity
+                .created(URI.create("/articles" + articleResponseDTO.getId()))
+                .body(articleService.createArticle(createArticleDTO));
     }
 
 }

@@ -1,10 +1,12 @@
 package com.springpractice.blogapi.security.jwt;
 
 import com.springpractice.blogapi.users.UserEntity;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
+
 
 public class JWTAuthentication implements Authentication {
 
