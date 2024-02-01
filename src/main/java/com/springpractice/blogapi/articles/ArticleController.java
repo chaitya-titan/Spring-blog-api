@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/articles")
+@RequestMapping("/articles")
 @AllArgsConstructor
 public class ArticleController {
     private ArticleService articleService;
@@ -16,5 +16,9 @@ public class ArticleController {
         return "Articles";
     }
 
+    @GetMapping("/private")
+    public String getPrivateArticles() {
+        return "Private Articles";
+    }
 
 }
