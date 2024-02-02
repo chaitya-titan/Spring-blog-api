@@ -7,8 +7,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity(name = "comments")
+@Setter
+@Getter
 public class CommentEntity extends BaseEntity {
     @Column(nullable = false, length = 100)
     String title;
