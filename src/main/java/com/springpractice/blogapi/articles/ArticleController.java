@@ -3,10 +3,15 @@ package com.springpractice.blogapi.articles;
 import com.springpractice.blogapi.dto.ArticleResponseDTO;
 import com.springpractice.blogapi.dto.CreateArticleDTO;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
+
+import static java.util.List.of;
 
 @RestController
 @RequestMapping("/articles")
@@ -14,15 +19,22 @@ import java.net.URI;
 public class ArticleController {
     private ArticleService articleService;
 
-//    @GetMapping("")
-//    public String getArticles() {
-//        return "Hello World";
-//    }
-//
-//    @GetMapping("/private")
-//    public String getPrivateArticles() {
-//        return "Hello Private World";
-//    }
+    @GetMapping
+    public ResponseEntity<List<ArticleResponseDTO>> getArticlesWithPagination(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(articleService.getAllArticles(page, size));
+    }
+
+    @GetMapping(params = "author")
+    public ResponseEntity<ArticleResponseDTO> getArticlesByAuthor(@RequestParam String author) {
+        return ResponseEntity.ok(articleService.getArticlesByAuthor(author));
+    }
+
+    @GetMapping("/{article-slug}")
+    public ResponseEntity<ArticleResponseDTO> getArticle(@PathVariable("article-slug") String articleSlug) {
+        return ResponseEntity.ok(articleService.getArticle(articleSlug));
+    }
 
     @PostMapping("")
     public ResponseEntity<ArticleResponseDTO> createArticle(@RequestBody CreateArticleDTO createArticleDTO) {

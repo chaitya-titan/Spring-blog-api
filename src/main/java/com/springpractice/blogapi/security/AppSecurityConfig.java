@@ -26,8 +26,8 @@ public class AppSecurityConfig {
                 .cors(AbstractHttpConfigurer::disable) // TODO: Re-enable in production
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers(HttpMethod.POST, "/users/**").permitAll()
-                         .requestMatchers(HttpMethod.GET, "/articles").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/articles").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/articles").permitAll()
+                         .requestMatchers(HttpMethod.GET, "/articles/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/profiles/**").permitAll()
                         .anyRequest().authenticated()
                 )

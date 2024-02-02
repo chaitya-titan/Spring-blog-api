@@ -15,5 +15,5 @@ public class ArticleResponseDTO {
     String slug;
     String body;
     Date createdAt;
-    Integer userId;
+    Integer authorId;
 }
