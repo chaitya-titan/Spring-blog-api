@@ -74,10 +74,18 @@ public class ArticleService {
     }
 
     public ArticleResponseDTO updateArticle(EditArticleDTO editArticleDTO) {
+        String token = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
+        Integer userId = jwtService.getUserIDFromJWT(token);
         ArticleEntity articleEntity = articleRepository.findBySlug(editArticleDTO.getSlug());
-        articleEntity.setBody(editArticleDTO.getBody());
-        ArticleEntity savedArticleEntity = articleRepository.save(articleEntity);
-        return modelMapper.map(savedArticleEntity, ArticleResponseDTO.class);
+        Integer authorId = articleEntity.getAuthor().getId();
+        if(!authorId.equals(userId)) {
+            //TODO: Better Way to handle this
+            throw new RuntimeException("You are not the author of this article");
+        }else{
+            articleEntity.setBody(editArticleDTO.getBody());
+            ArticleEntity savedArticleEntity = articleRepository.save(articleEntity);
+            return modelMapper.map(savedArticleEntity, ArticleResponseDTO.class);
+        }
     }
 
     protected String createSlug(String title) {
