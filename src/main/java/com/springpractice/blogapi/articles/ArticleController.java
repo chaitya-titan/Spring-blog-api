@@ -2,6 +2,7 @@ package com.springpractice.blogapi.articles;
 
 import com.springpractice.blogapi.dto.ArticleResponseDTO;
 import com.springpractice.blogapi.dto.CreateArticleDTO;
+import com.springpractice.blogapi.dto.EditArticleDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +35,15 @@ public class ArticleController {
     @GetMapping("/{article-slug}")
     public ResponseEntity<ArticleResponseDTO> getArticle(@PathVariable("article-slug") String articleSlug) {
         return ResponseEntity.ok(articleService.getArticle(articleSlug));
+    }
+
+    @PatchMapping("/{article-slug}")
+    public ResponseEntity<ArticleResponseDTO> updateArticle(
+            @PathVariable("article-slug") String articleSlug,
+            @RequestBody EditArticleDTO editArticleDTO) {
+        //TODO: check if the slug exists or not
+        editArticleDTO.setSlug(articleSlug);
+        return ResponseEntity.ok(articleService.updateArticle(editArticleDTO));
     }
 
     @PostMapping("")
